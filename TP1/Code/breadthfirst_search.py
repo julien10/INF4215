@@ -18,6 +18,7 @@ def breadthfirst_search(initialState):
         # print '----------------'
         if node.state.isGoal():
             node.state.show()
+            print 'Cost:', node.g
             print 'Steps:', step
             return node
         elif node.isRepeated():
