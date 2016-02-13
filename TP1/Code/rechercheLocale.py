@@ -5,7 +5,7 @@ import time
 from math import *
 from copy import deepcopy
 import Tkinter as tk
-from random import *
+# from random import randint
 
 from Algorithmes.localSearchMadeHome import *
 
@@ -24,12 +24,13 @@ points30 = [(x,y) for x in range(5,11) for y in range(5,11)]
 points30.extend([(x,y) for x in range(20,26) for y in range(20,26)])
 points15 = [(10,3),(4,9),(8,10),(13,9),(14,11),(2,15)]
 points50 = [(10, 10),(20,20),(30, 0),(30, 40),(50, 40)]
-points50b = set()
-for i in range(1000):
-	points50b.add((randint(0,50),randint(0,50)))
+test = [(44, 34), (37, 36), (33, 3), (41, 4), (39, 33), (3, 1), (0, 18), (19, 34), (3, 38)]
+# points50b = set()
+# for i in range(1000):
+# 	points50b.add((randint(0,50),randint(0,50)))
 
 
-points = points50b
+points = points50
 
 
 def search(points, k, c):
@@ -73,8 +74,15 @@ for (x,y) in points:
 	nb += 1
 	canvas.create_circle(x*15,(grille[0]-y)*15,4,fill="red",outline="red")
 for (x,y,r) in solution:
+	txt = str((x,y,r))
 	canvas.create_circle(x*15,(grille[0]-y)*15,r*15)
 	canvas.create_circle(x*15,(grille[0]-y)*15,2,fill="black")
+	canvas.create_text(x*15,(grille[0]-y)*15 - 20,text=txt,fill="blue")
+
+# canvas.create_circle(10*15, 15*grille[0]-34*15, 9*15,outline="red")
+# canvas.create_circle(0*15, 15*grille[0]-9*15, 9*15,outline="red")
+# canvas.create_circle(36*15, 15*grille[0]-4*15, 5*15,outline="red")
+# canvas.create_circle(40*15, 15*grille[0]-34*15, 4*15,outline="red")
 
 print str(nb) + ' points'
 sortie = raw_input("Appuyez sur une touche pour quitter")

@@ -103,9 +103,9 @@ Abdelhadi \textsc{Temmar}\\
 \subsubsection{Représentation d'un état}
 Un état est composé de:
 \begin{itemize}
-	\item une liste des coordonnées des points restant à couvrir
-	\item une liste des antennes placées (position et rayon)
-	\item le coût requis par les antennes déjà placées
+	\item un ensemble comprenant les coordonnées des points restant à couvrir
+	\item un ensemble comprenant les antennes placées (position et rayon)
+%	\item le coût requis par les antennes déjà placées
 \end{itemize}
 
 \subsubsection{Etat initial}
@@ -129,6 +129,8 @@ Après plusieurs tests, l'algorithme de recherche en profondeur s'est avéré le
 
 L'algorithme de recherche au moindre de coût ne retourne toujours pas de résultat en 1h de recherche pour une taille de grille de $50 \times 50$.
 Nous avons donc essayé d'utiliser l'algorithme A* et de trouver une heuristique capable d'améliorer la recherche de moindre coût. Malheureusement aucune de nos heuristiques n'a donné de résultat concluant.
+
+Il a donc fallu faire un choix entre optimalité et rapidité. N'ayant pas trouvé une façon d'obtenir la solution optimale en moins d'une heure, nous avons préféré opter pour l'algorithme de recherche en profondeur qui garantit de trouver une solution convenable en un minimum de temps.
 
 
 
@@ -162,7 +164,10 @@ L'état final est atteint lorsque plus aucune fusion n'est possible.
 
 
 \subsection{Résultats}
-Cette méthode est considérablement plus rapide que la recherche arborescente, puisque le nombre d'opérations effectuées est bien moindre. Sur une grille de $50 \times 50$, on obtient une solution proche de l'optimale (voir figure \ref{50x50}) en moins d'une milliseconde. 
+Cette méthode est considérablement plus rapide que la recherche arborescente, puisque le nombre d'opérations effectuées est bien moindre. Sur une grille de $50 \times 50$, on obtient une solution proche de l'optimale (voir figure \ref{50x50}) en moins d'une milliseconde. Afin d'améliorer la solution, une fois toutes les fusions effectuées, on regarde pour chaque antenne si en la déplaçant dans un voisinage de $5 \times 5$ on peut réduire son rayon tout en continuant de couvrir les points qu'elle couvrait déjà. Cela permet d'améliorer la solution trouvée et de la rapprocher encore plus de l'optimale.
+
+\vspace{0.5cm}
+Nous choisissons donc notre implémentation locale pour le concours.
 
 \begin{figure}[H]
   \centering

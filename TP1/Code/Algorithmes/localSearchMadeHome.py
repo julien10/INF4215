@@ -9,7 +9,6 @@ def dist(p1,p2):
     return sqrt((x1-x2)**2 + (y1-y2)**2)
 
 def barycentre(points):
-    # print points
     x = 0
     y = 0
     n = len(points)
@@ -47,9 +46,20 @@ def localSearch(initialState, K, C):
                     ants.remove((x2,y2,r2, liste2))
                     break
         for (x,y,r,pointsCouverts) in initialState.antennas:
-            while (dist((x,y),p) for p in pointsCouverts) <= r:
-                r -= 1
-                print 'Rayon diminue'
+            maxDist = max(dist((x,y),p) for p in pointsCouverts)
+            improvement = False
+            for dx in range(-5,5):
+                for dy in range(-5,5):
+                    maxDistNew = max(dist((x+dx,y+dy),p) for p in pointsCouverts)
+                    if maxDistNew < maxDist:
+                        maxDist = maxDistNew
+                        dX = dx
+                        dY = dy
+                        improvement = True
+            if improvement:
+                initialState.antennas.remove((x,y,r,pointsCouverts))
+                initialState.antennas.append((x+dX,y+dY,int(ceil(maxDist)),pointsCouverts))
+
 
 
         return initialState.antennas
