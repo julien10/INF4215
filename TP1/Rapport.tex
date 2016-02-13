@@ -1,0 +1,136 @@
+\documentclass[12pt]{article}
+\usepackage[frenchb]{babel} 
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+%\usepackage{lmodern} 
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm , right=2.5cm]{geometry}
+%\usepackage{amsmath}
+%\usepackage{amsthm}
+%\usepackage{amsfonts}
+\usepackage{empheq}
+\usepackage{setspace}
+\usepackage{hyperref}
+\hypersetup{pdftitle = {INF4215 - Rapport de laboratoire}, pdfauthor={Julien Antoine}}
+\usepackage{color}
+\usepackage{subfigure}
+\usepackage{fancyvrb}
+\usepackage{SIunits}
+\usepackage{numprint}
+\usepackage{enumitem}
+\usepackage{calc}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{cellspace}
+\cellspacetoplimit=4pt
+\cellspacebottomlimit=4pt
+
+% ----------------------------------- FANCY HEADER -----------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.5pt}
+%\fancyhead[C]{\textbf{page \thepage}} 
+\fancyhead[L]{}
+\fancyhead[R]{Rapport de laboratoire}
+
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[C]{\textbf{\thepage}} 
+\fancyfoot[L]{Polytechnique Montréal}
+\fancyfoot[R]{INF4215 -- Intelligence artificielle}
+% ------------------------------------------------------------------------------------
+
+
+\providecommand{\e}[1]{\ensuremath{\cdot 10^{#1}}}
+\newcommand{\question}{\noindent$\bullet$\;\;}
+\newcommand{\eau}{\ensuremath{\text{H}_2 \text{O}}}
+\newcommand{\dio}{\ensuremath{\text{CO}_2}}
+%\addto\captionsfrancais{\renewcommand{\chaptername}{Labo}}
+
+\begin{document}
+
+\hyphenation{HyperLogLog experimental techno-logy according develop-ment}
+
+
+\begin{titlepage}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+\center % Center everything on the page
+%------------------------------------------------------------------------------------
+%	LOGO SECTION
+%------------------------------------------------------------------------------------
+\raggedright
+\includegraphics[width = 0.33\textwidth]{../../../logo}\\[6cm] 
+\centering
+%------------------------------------------------------------------------------------
+%	TITLE SECTION
+%------------------------------------------------------------------------------------
+\HRule \\[0.4cm]
+{ \huge \bfseries INF4215 -- Rapport de laboratoire}\\[0.4cm]
+{ \Large \bfseries Recherche dans un espace d'états}\\%[0.4cm] 
+\HRule \\[1cm]
+%------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%------------------------------------------------------------------------------------
+\begin{minipage}{0.45\textwidth}
+\begin{center} \large
+Julien \textsc{Antoine}\\
+1813026
+\end{center}
+\end{minipage}
+~
+\begin{minipage}{0.45\textwidth}
+\begin{center} \large
+Abdelhadi \textsc{Temmar}\\
+1805815
+\end{center}
+\end{minipage}\\[8cm]
+%------------------------------------------------------------------------------------
+%	DATE SECTION
+%------------------------------------------------------------------------------------
+\begin{center}
+{\large 14 février 2015}
+\end{center}
+%------------------------------------------------------------------------------------
+\vfill % Fill the rest of the page with whitespace
+\end{titlepage}
+
+\section{Recherche arborescente}
+\subsection{Représentation du problème}
+Chaque état contient la liste des points restant à couvrir, la liste des antennes placées et leur coût total. A l'état initial, on a donc la liste complète des points à couvrir, une liste vide pour les antennes, et un coût de 0.
+
+\subsection{Recherche en profondeur}
+
+\subsection{Recherche au moindre coût}
+
+\subsection{Recherche A*}
+
+
+\section{Recherche locale}
+Un deuxième type de recherche est la recherche locale. Contrairement à la recherche arborescente vue dans la section précédente, la locale part d'un état et essaie de l'améliorer sur base de satisfaction de contraintes.
+
+\subsection{Représentation du problème}
+
+
+
+\subsection{Méthode}
+
+
+
+\section{Réponses aux questions}
+\paragraph{a)}
+
+
+
+\paragraph{b)}
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

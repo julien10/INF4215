@@ -1,54 +1,37 @@
-import depthfirst_search
+__author__ = 'Julien Antoine et Abdlhadi Temmar'
 
-__author__ = 'juanta tout seul'
-# video.py
-#
-# Author: Michel Gagnon
-#         michel.gagnon@polytml.ca
-# Date:   Januay 7th 2015
-#
-# This problem consists in selecting a set of videoa that cover a list of topics
-# given as input, such that their total duration is minimized
+
 
 import sys
 import time
-sys.path.append('../Algorithmes')
 
-from node import *
-from state import *
-from breadthfirst_search import *
-from depthfirst_search import *
-from lowestcost_search import *
-from iterative_deepening_search import *
-from astar_search import *
-from branch_and_bound import *
+from Algorithmes.breadthfirst_search import *
+from Algorithmes.astar_search import *
+from Algorithmes.branch_and_bound import *
 from math import sqrt
-from copy import deepcopy
 
 #grille = (50,50)
 grille = (50, 50)
 K = 200
 C = 1
 initialUncoveredPoints = 0;
-#points30 = [(10, 2),(8, 9),(23, 9),(14, 10), (29, 10), (17, 14), (4, 23), (28, 23), (29, 25), (17, 29)]
+# points30 = [(10, 2),(8, 9),(23, 9),(14, 10), (29, 10), (17, 14), (4, 23), (28, 23), (29, 25), (17, 29)]
 # points30 = [(10, 2),(8, 9), (29, 10), (4, 23), (29, 25), (17, 29)]    # points ecartes
 points30 = [(10, 2),(8, 9), (29, 10), (23, 9), (14, 10), (17, 14)]      # points en haut
 points15 = [(10,3),(4,9),(8,10),(13,9),(14,11),(2,15)]
 points50 = [(10, 10),(20,20),(30, 0),(30, 40),(50, 40)]
 points5 = [(1, 1),(2,2),(3, 0),(3, 4),(5, 4)]
 
+
+def search(points, k, c):
+    K = k
+    C = c
+    return breadthfirst_search(AntennaState(points))
+
 def dist(p1,p2):
     (x1, y1) = p1
     (x2, y2) = p2
     return sqrt((x1-x2)**2 + (y1-y2)**2)
-
-def maxDist(self):
-    maxDist = 0
-    listPoints = list(self.uncoveredPoints)
-    for i in range(0, len(listPoints)):
-        for j in range(i+1, len(listPoints)):
-            maxDist = max(maxDist, dist(listPoints[i],listPoints[j]))
-    return maxDist
 
 def densite(listPoints):
     if len(listPoints) == 0:
@@ -121,12 +104,23 @@ class AntennaState(State):
         # return maxDist(self)
         # return self.cout - self.coutMax
 
+    # Calcule la distance entre les deux points les plus eloignes
+    def maxDist(self):
+        maxDist = 0
+        listPoints = list(self.uncoveredPoints)
+        for i in range(0, len(listPoints)):
+            for j in range(i+1, len(listPoints)):
+                maxDist = max(maxDist, dist(listPoints[i],listPoints[j]))
+        return maxDist
 
 
 start_time = time.time()
+
+solution = search(points30, 200, 1)
+
 #solution = branch_and_bound_search(AntennaState(points15))
 # solution = astar_search(AntennaState(points30))
-solution = breadthfirst_search(AntennaState(points30))
+# solution = breadthfirst_search(AntennaState(points50))
 # solution = lowestcost_search(AntennaState(points30))
 # solution = depthfirst_search(AntennaState(points30))
 
