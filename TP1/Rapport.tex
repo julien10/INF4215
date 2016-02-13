@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 \usepackage[frenchb]{babel} 
 \usepackage[T1]{fontenc}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 %\usepackage{lmodern} 
 \usepackage{graphicx}
 \usepackage{multirow}
@@ -36,7 +36,7 @@
 
 \renewcommand{\footrulewidth}{0.5pt}
 \fancyfoot[C]{\textbf{\thepage}} 
-\fancyfoot[L]{Polytechnique Montr�al}
+\fancyfoot[L]{Polytechnique Montréal}
 \fancyfoot[R]{INF4215 -- Intelligence artificielle}
 % ------------------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@
 %------------------------------------------------------------------------------------
 \HRule \\[0.4cm]
 { \huge \bfseries INF4215 -- Rapport de laboratoire}\\[0.4cm]
-{ \Large \bfseries Recherche dans un espace d'�tats}\\%[0.4cm] 
+{ \Large \bfseries Recherche dans un espace d'états}\\%[0.4cm] 
 \HRule \\[1cm]
 %------------------------------------------------------------------------------------
 %	AUTHOR SECTION
@@ -88,40 +88,105 @@ Abdelhadi \textsc{Temmar}\\
 %	DATE SECTION
 %------------------------------------------------------------------------------------
 \begin{center}
-{\large 14 f�vrier 2015}
+{\large 14 février 2015}
 \end{center}
 %------------------------------------------------------------------------------------
 \vfill % Fill the rest of the page with whitespace
 \end{titlepage}
 
+
+
 \section{Recherche arborescente}
-\subsection{Repr�sentation du probl�me}
-Chaque �tat contient la liste des points restant � couvrir, la liste des antennes plac�es et leur co�t total. A l'�tat initial, on a donc la liste compl�te des points � couvrir, une liste vide pour les antennes, et un co�t de 0.
+\subsection{Représentation du problème}
+%Chaque état contient la liste des points restant à couvrir, la liste des antennes placées et leur coût total. A l'état initial, on a donc la liste complète des points à couvrir, une liste vide pour les antennes, et un coût de 0.
 
-\subsection{Recherche en profondeur}
+\subsubsection{Représentation d'un état}
+Un état est composé de:
+\begin{itemize}
+	\item une liste des coordonnées des points restant à couvrir
+	\item une liste des antennes placées (position et rayon)
+	\item le coût requis par les antennes déjà placées
+\end{itemize}
 
-\subsection{Recherche au moindre co�t}
+\subsubsection{Etat initial}
+L'état initial est donc composé de l'ensemble des points à couvrir, d'un ensemble vide (représentant les antennes placées), et d'un coût de 0.
 
-\subsection{Recherche A*}
+\subsubsection{Actions possibles}
+Une seule action est possible à partir d'un état: l'ajout d'une nouvelle antenne.
+Cependant, avant de chercher les antennes que l'on peut possiblement ajouter, nous vérifions que le nombre d'antennes de l'état ne dépasse pas le nombre de points initiaux et que le coût de l'ajout d'une nouvelle antenne additionné à celui des antennes déjà placées
+%$coutActuelEtat + K  + C$ 
+ne dépasse pas le coût maximal. En effet, nous ne voulons pas que notre programme retourne une solution avec un coût supérieur à celui qu'on obtiendrait si on ne plaçait qu'une seule antenne couvrant tous les points.
+
+Nous recherchons ensuite la liste des antennes que l'on peut ajouter, toujours en vérifiant que cet ajout n'engendre pas une solution avec un coût supérieur au coût maximal. Si aucun point ne se trouve sur le périmètre maximal de l'antenne, nous décidons de ne pas la considérer. Nous ne voulons pas de rayon trop grand inutilement.
+
+
+\subsubsection{État final}
+Un état est final si l'ensemble de points qu'il reste à couvrir est vide.
+
+
+\subsection{Type de recherche choisi}
+Après plusieurs tests, l'algorithme de recherche en profondeur s'est avéré le plus efficace pour notre recherche arborescente. Il apporte une solution en environ une minute pour une grille de $50 \times 50$ sans qu'on ait à faire aucune vérification particulière sur un n\oe ud après ajout d'une antenne. 
+
+L'algorithme de recherche au moindre de coût ne retourne toujours pas de résultat en 1h de recherche pour une taille de grille de $50 \times 50$.
+Nous avons donc essayé d'utiliser l'algorithme A* et de trouver une heuristique capable d'améliorer la recherche de moindre coût. Malheureusement aucune de nos heuristiques n'a donné de résultat concluant.
+
+
+
+%\subsection{Recherche en profondeur}
+%
+%\subsection{Recherche au moindre coût}
+%
+%\subsection{Recherche A*}
 
 
 \section{Recherche locale}
-Un deuxi�me type de recherche est la recherche locale. Contrairement � la recherche arborescente vue dans la section pr�c�dente, la locale part d'un �tat et essaie de l'am�liorer sur base de satisfaction de contraintes.
+Un deuxième type de recherche est la recherche locale. Contrairement à la recherche arborescente vue dans la section précédente, la locale part d'un état et essaie de l'améliorer sur base de satisfaction de contraintes.
 
-\subsection{Repr�sentation du probl�me}
+\subsection{Représentation du problème}
+\subsubsection{Représentation d'un état}
+Un état est simplement composé d'une liste des antennes placées (position, rayon et coordonnées des points couverts), par exemple:
+\begin{equation*}
+	\texttt{[(20,15,7,[(22,19),(14,15),(17,18)])]}
+\end{equation*}
+signifie qu'une seule antenne est positionnée en $(20,15)$ avec un rayon de taille 7, et qu'elle couvre les points $(22,19)$, $(14,15)$ et $(17,18)$.
+
+
+\subsubsection{Etat initial}
+L'état initial est celui où une antenne de rayon 1 est placée sur chaque point à couvrir.
+
+\subsubsection{Actions possibles}
+Les actions possibles à partir de chaque état est une fusion entre deux antennes. Cette action est faisable uniquement si le coût de l'antenne résultante de la fusion de deux antennes est inférieur au coût total des deux antennes. Lors de la fusion, l'antenne résultante se situe au barycentre des points couverts par chacune des deux antennes fusionnées, et a pour rayon la distance entre ce barycentre et le point couvert par l'antenne le plus éloigné.
+
+\subsubsection{Etat final}
+L'état final est atteint lorsque plus aucune fusion n'est possible.
+
+
+\subsection{Résultats}
+Cette méthode est considérablement plus rapide que la recherche arborescente, puisque le nombre d'opérations effectuées est bien moindre. Sur une grille de $50 \times 50$, on obtient une solution proche de l'optimale (voir figure \ref{50x50}) en moins d'une milliseconde. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width = 0.7\textwidth]{50x50}
+  \caption{Résultat de la recherche locale pour l'exemple de l'énoncé}
+  \label{50x50}
+\end{figure}
 
 
 
-\subsection{M�thode}
-
-
-
-\section{R�ponses aux questions}
+\section{Réponses aux questions}
 \paragraph{a)}
-
+La fonction \texttt{fct} renvoie uniquement les éléments de \texttt{inputList} qui vérifient les prédicats présents dans \texttt{predList}.
+Par exemple,
+\begin{equation*}
+	\texttt{fct([lambda: x < 8, lambda: x > 3], [1,2,3,4,5,6,7,8])}
+\end{equation*}
+retourne les éléments compris strictement entre 3 et 8, donc [4,5,6,7].
 
 
 \paragraph{b)}
+Le point fort de notre recherche locale est clairement sa rapidité d'exécution. Quelle que soit la taille de la grille ou le nombre de points, elle retourne toujours un résultat endéans la seconde. Le résultat retourné est en général assez proche de l'optimal, on n'obtient jamais de résultat absurde. Sa faiblesse est qu'elle ne retourne jamais la solution optimale, sauf dans certains cas simples comprenant une symétrie par exemple.
+
+Notre recherche arborescente a comme point fort de garantir de trouver la solution optimale. Cependant, ce point est largement contre balancé par le fait que pour des tailles de grilles plus conséquentes, elle ne produit pas de résultat avant au moins 45 minutes. Cela est notamment dû à des lacunes dans l'heuristique, que nous n'avons malheureusement pas réussi à améliorer comme nous l'aurions désiré.
 
 
 

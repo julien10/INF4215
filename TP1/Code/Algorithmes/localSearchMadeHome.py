@@ -34,17 +34,22 @@ def localSearch(initialState, K, C):
                     if d > newR:
                         newR = d
                 newR = int(ceil(newR))
-                print 'Tentative de fusion des antennes ' + str((x, y, r)) + ' et ' + str((x2, y2, r2)) + ' en ' + str((bar,newR))
+                # print 'Tentative de fusion des antennes ' + str((x, y, r)) + ' et ' + str((x2, y2, r2)) + ' en ' + str((bar,newR))
                 # print str(cout) + '  ' + str(K + C*newR**2)
                     # int(ceil(dist((x,y),(x2,y2))/2))
                 if K + C*newR**2 < cout:
                     fusion = True
                     ants.append((bar[0], bar[1], newR, liste1 + liste2))
-                    print '  --> Fusion des antennes ' + str((x, y, r)) + ' et ' + str((x2, y2, r2)) + ' en ' + str((int((x+x2)/2),int((y+y2)/2),newR))
+                    # print '  --> Fusion des antennes ' + str((x, y, r)) + ' et ' + str((x2, y2, r2)) + ' en ' + str((int((x+x2)/2),int((y+y2)/2),newR))
                     initialState.antennas.append((bar[0], bar[1], newR, liste1 + liste2))
                     initialState.antennas.remove((x2,y2,r2, liste2))
                     initialState.antennas.remove((x,y,r, liste1))
                     ants.remove((x2,y2,r2, liste2))
                     break
+        for (x,y,r,pointsCouverts) in initialState.antennas:
+            while (dist((x,y),p) for p in pointsCouverts) <= r:
+                r -= 1
+                print 'Rayon diminue'
+
 
         return initialState.antennas

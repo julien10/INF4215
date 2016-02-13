@@ -6,12 +6,14 @@ import sys
 import time
 
 from Algorithmes.breadthfirst_search import *
+from Algorithmes.depthfirst_search import *
 from Algorithmes.astar_search import *
 from Algorithmes.branch_and_bound import *
 from math import sqrt
+import Tkinter as tk
 
-#grille = (50,50)
-grille = (50, 50)
+grille = (50,50)
+# grille = (30, 30)
 K = 200
 C = 1
 initialUncoveredPoints = 0;
@@ -22,11 +24,13 @@ points15 = [(10,3),(4,9),(8,10),(13,9),(14,11),(2,15)]
 points50 = [(10, 10),(20,20),(30, 0),(30, 40),(50, 40)]
 points5 = [(1, 1),(2,2),(3, 0),(3, 4),(5, 4)]
 
+points = points50
+
 
 def search(points, k, c):
     K = k
     C = c
-    return breadthfirst_search(AntennaState(points))
+    return depthfirst_search(AntennaState(points))
 
 def dist(p1,p2):
     (x1, y1) = p1
@@ -116,7 +120,8 @@ class AntennaState(State):
 
 start_time = time.time()
 
-solution = search(points30, 200, 1)
+solution = search(points, 200, 1)
+print str(solution.state.antennas)
 
 #solution = branch_and_bound_search(AntennaState(points15))
 # solution = astar_search(AntennaState(points30))
@@ -125,3 +130,30 @@ solution = search(points30, 200, 1)
 # solution = depthfirst_search(AntennaState(points30))
 
 print "Temps en secondes : " + str(time.time() - start_time)
+
+
+
+root = tk.Tk()
+canvas = tk.Canvas(root, width=15*grille[0], height=15*grille[1], borderwidth=1, highlightthickness=0, bg="white")
+canvas.grid()
+nb = 0
+
+def _create_circle(self, x, y, r, **kwargs):
+    return self.create_oval(x-r, y-r, x+r, y+r, **kwargs)
+tk.Canvas.create_circle = _create_circle
+
+for i in range(grille[0]):
+    canvas.create_line(15 * i, 0, 15 * i, 15*grille[0])
+    canvas.create_line(0, 15 * i, 15*grille[1], 15 * i)
+for (x,y) in points:
+    nb += 1
+    canvas.create_circle(x*15,(grille[0]-y)*15,3,fill="red",outline="red")
+for (x,y,r) in solution.state.antennas:
+    canvas.create_circle(x*15,(grille[0]-y)*15,r*15)
+    canvas.create_circle(x*15,(grille[0]-y)*15,2,fill="black")
+
+print str(nb) + ' points'
+sortie = input("Appuyez sur une touche pour quitter")
+
+
+
